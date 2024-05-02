@@ -15,10 +15,12 @@ module.exports.getProducts = async (req, res) => {
         price: product.price * 80,
       }));
 
-      await Product.insertMany(modifiedProducts);
+      // Save fetched products to MongoDB
+      const savedProducts = await Product.insertMany(modifiedProducts);
 
-      // Return the fetched products
-      return res.json(modifiedProducts);
+      // Return the saved products, including the generated _id from MongoDB
+      console.log("saved to mongo:", savedProducts);
+      return res.json(savedProducts);
     }
     console.log("called mongo get products");
     return res.json(products);

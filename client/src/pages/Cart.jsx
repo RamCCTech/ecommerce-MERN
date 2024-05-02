@@ -22,7 +22,6 @@ const Cart = () => {
 
   useEffect(() => {
     if (cartStatus === "idle" && currentUser) {
-      // Fetch cart items when the component mounts and the cart status is idle
       dispatch(fetchCartItems(currentUser._id));
     }
   }, [dispatch, cartStatus, currentUser]);

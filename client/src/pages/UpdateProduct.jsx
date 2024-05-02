@@ -3,14 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductById, updateProduct } from "../redux/slices/productsSlice";
 import { TextField, Button, Container, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const UpdateProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productId } = useParams();
-  const currentUser = useSelector((state) => state.user.currentUser);
-
   const productData = useSelector((state) => getProductById(state, productId));
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const [formData, setFormData] = useState({
     title: productData.title || "",
@@ -18,7 +30,7 @@ const UpdateProduct = () => {
     description: productData.description || "",
     category: productData.category || "",
     image: productData.image || "",
-    id: productData.id
+    id: productData.id,
   });
 
   const [validationError, setValidationError] = useState({
@@ -28,12 +40,6 @@ const UpdateProduct = () => {
     category: false,
     image: false,
   });
-
-  useEffect(() => {
-    if (!currentUser || (currentUser && !currentUser.isAdmin)) {
-      navigate("/products");
-    }
-  }, [currentUser, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,19 +56,22 @@ const UpdateProduct = () => {
     const isValid = validateForm();
 
     if (isValid) {
-      const updatedFormData = { ...formData};
-      dispatch(updateProduct({ id: productId, updatedProduct: updatedFormData }));
+      const updatedFormData = { ...formData };
+      dispatch(
+        updateProduct({ id: productId, updatedProduct: updatedFormData })
+      );
 
-      setFormData({
-        title: "",
-        price: 0,
-        description: "",
-        category: "",
-        image: "",
-      });
-
-      // Redirect to the products page
-      navigate("/products");
+      handleSnackbarOpen();
+      setTimeout(() => {
+        setFormData({
+          title: "",
+          price: 0,
+          description: "",
+          category: "",
+          image: "",
+        });
+        navigate("/products");
+      }, 4000);
     }
   };
 
@@ -146,6 +155,22 @@ const UpdateProduct = () => {
           Update Product
         </Button>
       </form>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <MuiAlert
+          variant="outlined"
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Item Updated Successfully!
+        </MuiAlert>
+      </Snackbar>
     </Container>
   );
 };

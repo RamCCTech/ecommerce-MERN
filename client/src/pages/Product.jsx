@@ -7,6 +7,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { addToCart } from "../redux/slices/cartSlice";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const Product = () => {
   const containerStyle = {
@@ -28,6 +30,18 @@ const Product = () => {
   const productData = useSelector((state) => getProductById(state, productId));
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleDelete = (event) => {
     event.stopPropagation();
@@ -42,13 +56,17 @@ const Product = () => {
 
   const handleAddToCart = (event) => {
     event.stopPropagation();
-    dispatch(
-      addToCart({
-        userId: currentUser._id,
-        productId: productData.id,
-        quantity: 1,
-      })
-    );
+
+    if (currentUser) {
+      dispatch(
+        addToCart({
+          userId: currentUser._id,
+          productId: productData.id,
+          quantity: 1,
+        })
+      );
+    }
+    handleSnackbarOpen();
   };
 
   if (!productData) {
@@ -103,6 +121,21 @@ const Product = () => {
           Edit
         </Button>
       )}
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <MuiAlert
+          onClose={handleSnackbarClose}
+          severity={currentUser ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {currentUser ? "Item added to cart!" : "Sign in to save your items!"}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const currentUser = useSelector((state) => state.user.currentUser);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -24,12 +23,6 @@ const AddProduct = () => {
     category: false,
     image: false,
   });
-
-  useEffect(() => {
-    if (!currentUser || (currentUser && !currentUser.isAdmin)) {
-      navigate("/products");
-    }
-  }, [currentUser, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -6,6 +6,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,6 +14,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteProduct, updateProduct } from "../redux/slices/productsSlice";
 import { useNavigate } from "react-router";
 import { addToCart } from "../redux/slices/cartSlice";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 export default function ProductCard({ productData }) {
   const cardStyle = {
@@ -57,10 +60,29 @@ export default function ProductCard({ productData }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   const handleDelete = (event) => {
     event.stopPropagation();
-    dispatch(deleteProduct(productData._id));
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (confirmDelete) {
+      dispatch(deleteProduct(productData._id));
+    }
   };
+
   const handleUpdate = (event) => {
     event.stopPropagation();
     navigate(`/update-product/${productData._id}`);
@@ -70,13 +92,17 @@ export default function ProductCard({ productData }) {
   };
   const handleAddToCart = (event) => {
     event.stopPropagation();
-    dispatch(
-      addToCart({
-        userId: currentUser._id,
-        productId: productData.id,
-        quantity: 1,
-      })
-    );
+
+    if (currentUser) {
+      dispatch(
+        addToCart({
+          userId: currentUser._id,
+          productId: productData.id,
+          quantity: 1,
+        })
+      );
+    }
+    handleSnackbarOpen();
   };
   return (
     <div onClick={handelCardClick}>
@@ -121,6 +147,21 @@ export default function ProductCard({ productData }) {
           )}
         </CardActions>
       </Card>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <MuiAlert
+          onClose={handleSnackbarClose}
+          severity={currentUser ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {currentUser ? "Item added to cart!" : "Sign in to save your items!"}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 }

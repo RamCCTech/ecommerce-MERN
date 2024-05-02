@@ -5,14 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (currentUser === null) {
-      navigate("/");
-    }
-  }, [currentUser, navigate]);
-
   return (
     currentUser && (
       <Container>
@@ -30,7 +22,6 @@ const Profile = () => {
             <Typography variant="subtitle1">
               Email: {currentUser.email}
             </Typography>
-            {/* Add more fields as needed */}
           </div>
         </Paper>
       </Container>
