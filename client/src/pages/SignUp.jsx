@@ -27,16 +27,19 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
-      setSnackbarMessage("Passwords do not match");
-      setSnackbarOpen(true);
+      setConfirmPasswordError("Passwords do not match");
+      return;
+    }
+    if (passwordError != "") {
       return;
     }
 
@@ -59,19 +62,13 @@ const SignUp = () => {
         navigate("/signin");
       } else {
         if (data.message === "Username already exists") {
-          setSnackbarMessage(
-            "Username already exists. Please choose a different username."
-          );
+          alert("Username already exists. Please choose a different username.");
         } else if (data.message === "Email already exists") {
-          setSnackbarMessage(
-            "Email already exists. Please use a different email address."
-          );
+          alert("Email already exists. Please use a different email address.");
         } else {
           // Handle other errors
-          setSnackbarMessage(`Error: ${data.message}`);
+          alert(`Error: ${data.message}`);
         }
-
-        setSnackbarOpen(true);
       }
     } catch (error) {
       console.error("Error signing up:", error);
@@ -82,11 +79,44 @@ const SignUp = () => {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const { name, value } = e.target;
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
+    // Update form data
+    setFormData({ ...formData, [name]: value });
+
+    // Password validation
+    if (name === "password") {
+      // Check for minimum length
+
+      if (value.length < 8) {
+        setPasswordError("Password must be at least 8 characters long");
+      } else {
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+        if (!hasUpperCase || !hasLowerCase) {
+          setPasswordError(
+            "Password must contain both uppercase and lowercase letters"
+          );
+        } else {
+          // Check for inclusion of special characters
+          const hasSpecialCharacter =
+            /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value);
+          if (!hasSpecialCharacter) {
+            setPasswordError(
+              "Password must contain at least one special character"
+            );
+          } else {
+            setPasswordError("");
+          }
+        }
+      }
+    } else if (name === "confirmPassword") {
+      if (value !== formData.password) {
+        setConfirmPasswordError("Passwords do not match");
+      } else {
+        setConfirmPasswordError("");
+      }
+    }
   };
 
   return (
@@ -137,6 +167,8 @@ const SignUp = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
+            error={!!passwordError}
+            helperText={passwordError}
           />
           <TextField
             label="Confirm Password"
@@ -148,8 +180,16 @@ const SignUp = () => {
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
+            error={!!confirmPasswordError}
+            helperText={confirmPasswordError}
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={loading}
+          >
             {loading ? "Signing Up..." : "Sign Up"}
           </Button>
         </form>
@@ -157,12 +197,6 @@ const SignUp = () => {
           Already have an account? <Link href="/signin">Sign In</Link>
         </Typography>
       </Paper>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-      />
     </Container>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, resetProducts } from "../redux/slices/productsSlice";
 import ProductCard from "../components/ProductCard";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, CircularProgress } from "@mui/material"; // Import CircularProgress
 import { useNavigate } from "react-router";
 
 const ERROR_FLAG_KEY = "productsErrorFlag";
@@ -38,44 +38,75 @@ export default function Products() {
     navigate("/add-product");
   };
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  } else if (status === "failed") {
-    return <div>Error: {error}</div>;
-  } else {
-    return (
-      <Container
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {currentUser && currentUser.isAdmin && (
-          <Button
-            variant="contained"
-            onClick={handleAddProduct}
-            style={{ margin: "16px 0" }}
-          >
-            Add Product
-          </Button>
-        )}
-        <Grid container spacing={6}>
-          {productsData.map((product) => (
-            <Grid
-              item
-              key={product.id}
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              justifyContent="center"
+  return (
+    <div
+      style={{
+        backgroundColor: "#CDE8E5",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
+    >
+      {status === "loading" && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      )}
+
+      {status === "failed" && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          Error: {error}
+        </div>
+      )}
+
+      {status !== "loading" && status !== "failed" && (
+        <Container
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            paddingTop: "20px",
+          }}
+        >
+          {currentUser && currentUser.isAdmin && (
+            <Button
+              variant="contained"
+              onClick={handleAddProduct}
+              style={{ marginBottom: "16px" }}
             >
-              <ProductCard productData={product} />
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    );
-  }
+              Add Product
+            </Button>
+          )}
+          <Grid container spacing={6}>
+            {productsData.map((product) => (
+              <Grid
+                item
+                key={product.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                justifyContent="center"
+              >
+                <ProductCard productData={product} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      )}
+    </div>
+  );
 }

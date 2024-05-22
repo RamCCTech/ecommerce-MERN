@@ -5,6 +5,8 @@ const authRoute = require("./routes/AuthRoute");
 const userRoute = require("./routes/UserRoute");
 const cartRoute = require("./routes/CartRoute");
 const productRoute = require("./routes/ProductRoute");
+const contactUsRoute = require("./routes/ContactUsRoute");
+
 require("dotenv").config();
 const { MONGO_URL, PORT } = process.env;
 
@@ -27,6 +29,7 @@ app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/cart", cartRoute);
 app.use("/products", productRoute);
+app.use("/contactUs", contactUsRoute);
 
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);

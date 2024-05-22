@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Paper, Typography } from "@mui/material";
+import { Container, Paper, Typography, Box } from "@mui/material";
 
 const AboutUs = () => {
   return (
@@ -9,70 +9,151 @@ const AboutUs = () => {
         sx={{
           padding: (theme) => theme.spacing(4),
           marginTop: (theme) => theme.spacing(4),
+          backgroundColor: "#f9f9f9",
         }}
       >
         <Typography
           variant="h4"
           gutterBottom
-          sx={{ marginBottom: (theme) => theme.spacing(2) }}
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#333",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
         >
           About Us
         </Typography>
         <Typography
           variant="body1"
           paragraph
-          sx={{ marginBottom: (theme) => theme.spacing(2) }}
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
         >
-          This website is developed by Ram Agrawal to demonstrate the learning
-          of HTML, CSS, and JavaScript. It serves as a showcase of acquired
-          skills in web development, emphasizing the practical application of
-          HTML for structuring content, CSS for styling and layout, and
-          JavaScript for creating dynamic and interactive features. Through this
-          project, I aim to convey the journey of learning and applying these
-          technologies in web development.
+          Welcome to our e-commerce platform, developed by Ram Agrawal. This
+          website serves as a testament to my journey in honing full stack
+          development skills using the MERN stack. It reflects my dedication to
+          creating a seamless and user-friendly online shopping experience.
         </Typography>
         <Typography
           variant="body1"
           paragraph
-          sx={{ marginBottom: (theme) => theme.spacing(2) }}
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
         >
-          The website is designed to function as an e-commerce platform,
-          providing users with the ability to explore and purchase a diverse
-          range of products. The product pages showcase various items, each
-          presented with detailed information, including images, prices, and
-          descriptions. Users can easily navigate through the website, browse
-          products, and make secure transactions.
+          I am Ram Agrawal, a software developer with a passion for full stack
+          development and a strong background in software engineering. My
+          journey in tech began with a solid foundation in C, C++, and Java, and
+          evolved into mastering JavaScript, TypeScript, and various front-end
+          and back-end technologies. My experience includes building scalable
+          applications, developing interactive user interfaces, and creating
+          robust APIs.
         </Typography>
         <Typography
           variant="body1"
           paragraph
-          sx={{ marginBottom: (theme) => theme.spacing(2) }}
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
         >
-          Additionally, the website features a comprehensive user experience
-          with dedicated sections such as the profile area, where users can
-          manage their personal information and track their order history. The
-          sign-in and sign-up pages allow for seamless account creation and
-          authentication, ensuring a secure and personalized experience for each
-          user.
+          This platform showcases a wide range of products, each accompanied by
+          detailed descriptions, images, and pricing information. Users can
+          effortlessly browse through categories and view product details. The
+          design emphasizes ease of navigation and a smooth user experience.
         </Typography>
         <Typography
           variant="body1"
           paragraph
-          sx={{ marginBottom: (theme) => theme.spacing(2) }}
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
         >
-          The about section provides insights into the background of this
-          project, detailing the motivation and goals behind its creation. For
-          any inquiries or assistance, users can utilize the contact page,
-          facilitating communication and feedback.
+          Key features include:
+          <Box component="ul" sx={{ pl: 2, color: "#555", lineHeight: 1.6 }}>
+            <li>User Profiles: Manage personal information and track order history.</li>
+            <li>Responsive Design: Optimized for all devices, ensuring a consistent experience across desktops, tablets, and smartphones.</li>
+          </Box>
         </Typography>
         <Typography
           variant="body1"
-          sx={{ marginBottom: (theme) => theme.spacing(2) }}
+          paragraph
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
         >
-          Through this multifaceted website, I aim to not only showcase
-          technical skills but also create a user-friendly and engaging platform
-          that reflects the practical application of web development concepts in
-          a real-world context.
+          I hold a B.Tech in Computer Engineering from Dr. Babasaheb Ambedkar
+          Technological University and have professional experience as a Member
+          of Technical Staff at CCTech, where I contributed to various
+          innovative projects. My portfolio includes:
+          <Box component="ul" sx={{ pl: 2, color: "#555", lineHeight: 1.6 }}>
+            <li>Villa Configurator App: An interactive tool for designing custom villas.</li>
+            <li>Deep Admin Website: A web scraping platform with a user-friendly interface and efficient data management.</li>
+          </Box>
+        </Typography>
+        <Typography
+          variant="body1"
+          paragraph
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
+        >
+          Outside of work, I enjoy listening to music, trekking, competitive
+          coding, and solving puzzles. My passion for continuous learning and
+          problem-solving drives my ambition to excel in the field of software
+          development.
+        </Typography>
+        <Typography
+          variant="body1"
+          paragraph
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
+        >
+          For more details about my projects and professional journey, you can
+          visit my{" "}
+          <a
+            href="https://github.com/ramagrawal2001"
+            style={{ color: "#1976d2", textDecoration: "none" }}
+          >
+            GitHub
+          </a>{" "}
+          and{" "}
+          <a
+            href="https://www.linkedin.com/in/ram-agrawal123/"
+            style={{ color: "#1976d2", textDecoration: "none" }}
+          >
+            LinkedIn
+          </a>{" "}
+          profiles.
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            marginBottom: (theme) => theme.spacing(2),
+            color: "#555",
+            lineHeight: 1.6,
+          }}
+        >
+          Thank you for visiting. Feel free to explore the platform, and if you
+          have any questions or need assistance, please use the contact page.
+          Your feedback is invaluable as I strive to improve and expand my
+          skills in web development.
         </Typography>
       </Paper>
     </Container>

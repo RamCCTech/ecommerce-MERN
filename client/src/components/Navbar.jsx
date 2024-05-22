@@ -12,13 +12,35 @@ import {
   Button,
   Tooltip,
   MenuItem,
+  Fade,
+  styled,
+  tooltipClasses,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 const pages = ["Products", "Contact Us", "About Us"];
+const HtmlTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#EEF7FF",
+    color: "#111111",
+    maxWidth: 220,
+    border: "1px solid #7AB2B2",
+    padding: "8px",
+    borderRadius: "4px",
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    "& .MuiTooltip-arrow": {
+      color: "#EEF7FF",
+    },
+  },
+}));
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -46,7 +68,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static" sx={{ px: 2 }}>
+    <AppBar position="static" sx={{ px: 2, backgroundColor: "#4D869C" }}>
       <Toolbar disableGutters>
         <StorefrontIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
         <Typography
@@ -64,7 +86,7 @@ function Navbar() {
             textDecoration: "none",
           }}
         >
-          E-commerce
+          E-Commerce
         </Typography>
 
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -75,6 +97,7 @@ function Navbar() {
             aria-haspopup="true"
             onClick={handleOpenNavMenu}
             color="inherit"
+            sx={{ p: 0 }}
           >
             <MenuIcon />
           </IconButton>
@@ -125,7 +148,7 @@ function Navbar() {
             textDecoration: "none",
           }}
         >
-          LOGO
+          E-Commerce
         </Typography>
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
           {pages.map((page) => (
@@ -143,11 +166,44 @@ function Navbar() {
         <Box sx={{ flexGrow: 0 }}>
           {currentUser ? (
             <React.Fragment>
-              <Tooltip title="Open settings">
+              <HtmlTooltip
+                arrow
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+                placement="bottom-end"
+                title={
+                  <div>
+                    <Typography variant="body2" component="p" align="center">
+                      <strong>
+                        Hello,{" "}
+                        <span style={{ textTransform: "capitalize" }}>
+                          {currentUser?.name}
+                        </span>
+                      </strong>
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      component="p"
+                      align="center"
+                      fontSize="11px"
+                    >
+                      <strong>Username: </strong> {currentUser?.username}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      component="p"
+                      align="center"
+                      fontSize="11px"
+                    >
+                      <strong>Email: </strong> {currentUser?.email}
+                    </Typography>
+                  </div>
+                }
+              >
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="A" src={currentUser.image} />
                 </IconButton>
-              </Tooltip>
+              </HtmlTooltip>
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
@@ -163,22 +219,88 @@ function Navbar() {
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
               >
                 <MenuItem
                   onClick={handleCloseUserMenu}
                   component={Link}
                   to="/profile"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 24, // Adjust icon size
+                    },
+                    "& .MuiTypography-root": {
+                      //fontWeight: "bold", // Adjust text weight
+                    },
+                  }}
                 >
+                  <AccountCircleOutlinedIcon />
                   <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
                 <MenuItem
                   onClick={handleCloseUserMenu}
                   component={Link}
                   to="/cart"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 24, // Adjust icon size
+                    },
+                    "& .MuiTypography-root": {
+                      //fontWeight: "bold", // Adjust text weight
+                    },
+                  }}
                 >
+                  <ShoppingCartOutlinedIcon />
                   <Typography textAlign="center">Cart</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleSignOut} component={Link} to="/">
+                <MenuItem
+                  onClick={handleSignOut}
+                  component={Link}
+                  to="/"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 24, 
+                    },
+                    "& .MuiTypography-root": {
+                      //fontWeight: "bold", // Adjust text weight
+                    },
+                  }}
+                >
+                  <LogoutOutlinedIcon />
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
               </Menu>

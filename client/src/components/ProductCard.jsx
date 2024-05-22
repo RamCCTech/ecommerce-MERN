@@ -26,10 +26,14 @@ export default function ProductCard({ productData }) {
       height: 400,
     },
     cursor: "pointer",
+    backgroundColor: "#EEF7FF",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   };
   const mediaStyle = {
     height: 140,
-    width: "100%",
+    width: "95%",
     objectFit: "contain",
     "@media (min-width:600px)": {
       height: 200,
