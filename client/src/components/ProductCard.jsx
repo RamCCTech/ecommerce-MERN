@@ -16,6 +16,13 @@ import { useNavigate } from "react-router";
 import { addToCart } from "../redux/slices/cartSlice";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import {
+  fetchFavorites,
+  setFavorite,
+  removeFavorite,
+} from "../redux/slices/userSlice"; // Import the removeFavorite thunk
 
 export default function ProductCard({ productData }) {
   const cardStyle = {
@@ -61,9 +68,15 @@ export default function ProductCard({ productData }) {
     left: 0,
     right: 0,
   };
+  const favoriteIconStyle = {
+    position: "absolute",
+    top: 8,
+    right: 8,
+  };
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const favoriteProducts = useSelector((state) => state.user.favoriteProducts);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
   const handleSnackbarOpen = () => {
@@ -91,9 +104,11 @@ export default function ProductCard({ productData }) {
     event.stopPropagation();
     navigate(`/update-product/${productData._id}`);
   };
+
   const handelCardClick = () => {
     navigate(`/product/${productData._id}`);
   };
+
   const handleAddToCart = (event) => {
     event.stopPropagation();
 
@@ -108,9 +123,38 @@ export default function ProductCard({ productData }) {
     }
     handleSnackbarOpen();
   };
+
+  const handleFavoriteClick = (event) => {
+    event.stopPropagation();
+
+    if (currentUser) {
+      if (favoriteProducts.includes(productData._id)) {
+        dispatch(
+          removeFavorite({
+            userId: currentUser._id,
+            productId: productData._id,
+          })
+        );
+      } else {
+        dispatch(
+          setFavorite({ userId: currentUser._id, productId: productData._id })
+        );
+      }
+    }
+  };
+
+  const isFavorite = favoriteProducts.includes(productData._id);
+
   return (
     <div onClick={handelCardClick}>
       <Card sx={cardStyle}>
+        <IconButton
+          sx={favoriteIconStyle}
+          onClick={handleFavoriteClick}
+          aria-label="add-to-favorites"
+        >
+          {isFavorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+        </IconButton>
         <CardMedia
           component="img"
           sx={mediaStyle}

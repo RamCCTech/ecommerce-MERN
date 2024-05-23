@@ -29,9 +29,21 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    favoriteProducts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        unique: true,
+      },
+    ],
   },
   { timestamps: true }
 );
+
+userSchema.pre("save", function (next) {
+  this.favoriteProducts = [...new Set(this.favoriteProducts)];
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 
