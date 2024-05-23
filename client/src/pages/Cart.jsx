@@ -107,7 +107,7 @@ const Cart = () => {
         </Container>
       )}
       {cartProducts && cartProducts.length > 0 ? (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} >
           {cartProducts.map((element) => {
             const product = products.find((p) => p.id === element.productId);
             if (!product) {
@@ -132,7 +132,7 @@ const Cart = () => {
                     height="200" // Fixed height for all images
                     image={product.image}
                     sx={{
-                      objectFit: "cover", // Cover scales the image while maintaining aspect ratio
+                      objectFit: "contain", // Cover scales the image while maintaining aspect ratio
                       borderRadius: "8px", // Optional: adds rounded corners to the image
                     }}
                   />
