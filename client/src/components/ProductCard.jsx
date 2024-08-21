@@ -143,18 +143,24 @@ export default function ProductCard({ productData }) {
     }
   };
 
-  const isFavorite = favoriteProducts.includes(productData._id);
+  const isFavorite = currentUser && favoriteProducts.includes(productData._id);
 
   return (
     <div onClick={handelCardClick}>
       <Card sx={cardStyle}>
-        <IconButton
-          sx={favoriteIconStyle}
-          onClick={handleFavoriteClick}
-          aria-label="add-to-favorites"
-        >
-          {isFavorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
-        </IconButton>
+        {currentUser && (
+          <IconButton
+            sx={favoriteIconStyle}
+            onClick={handleFavoriteClick}
+            aria-label="add-to-favorites"
+          >
+            {isFavorite ? (
+              <FavoriteIcon color="error" />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
+          </IconButton>
+        )}
         <CardMedia
           component="img"
           sx={mediaStyle}
