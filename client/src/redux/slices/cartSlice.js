@@ -1,12 +1,13 @@
 import axios from "axios";
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const fetchCartItems = createAsyncThunk(
   "cart/fetchCartItems",
   async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:3001/cart/${userId}`);
+      const response = await axios.get(`${apiUrl}/cart/${userId}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -18,7 +19,7 @@ export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async ({ userId, productId, quantity }) => {
     try {
-      const response = await axios.post("http://localhost:3001/cart/add", {
+      const response = await axios.post(`${apiUrl}/cart/add`, {
         userId,
         productId,
         quantity,
@@ -34,7 +35,7 @@ export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
   async ({ userId, productId }) => {
     try {
-      const response = await axios.post("http://localhost:3001/cart/remove", {
+      const response = await axios.post(`${apiUrl}/cart/remove`, {
         userId,
         productId,
       });

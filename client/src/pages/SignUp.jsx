@@ -30,6 +30,7 @@ const SignUp = () => {
 
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/auth/signup", {
+      const response = await fetch(`${apiUrl}/auth/signup`, {
         method: "POST",
         credentials: "include",
         headers: {

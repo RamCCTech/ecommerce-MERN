@@ -9,13 +9,14 @@ const initialState = {
   favoritesLoading: false,
   favoritesError: null,
 };
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const fetchFavorites = createAsyncThunk(
   "user/fetchFavorites",
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/user/${userId}/favorite`
+        `${apiUrl}/user/${userId}/favorite`
       );
       return response.data.favoriteProducts;
     } catch (error) {
@@ -29,7 +30,7 @@ export const setFavorite = createAsyncThunk(
   async ({ userId, productId }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:3001/user/${userId}/favorite`,
+        `${apiUrl}/user/${userId}/favorite`,
         { productId }
       );
       return response.data.user.favoriteProducts;
@@ -44,7 +45,7 @@ export const removeFavorite = createAsyncThunk(
   async ({ userId, productId }, { rejectWithValue }) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3001/user/${userId}/favorite`,
+        `${apiUrl}/user/${userId}/favorite`,
         { data: { productId } }
       );
       return response.data.user.favoriteProducts;

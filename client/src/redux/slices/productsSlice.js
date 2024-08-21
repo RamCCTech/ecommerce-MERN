@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
     try {
-      const response = await axios.get("http://localhost:3001/products");
+      const response = await axios.get(`${apiUrl}/products`);
       return response.data;
     } catch (error) {
       throw error;
@@ -18,7 +20,7 @@ export const addProduct = createAsyncThunk(
   async (newProduct) => {
     try {
       const response = await axios.post(
-        "http://localhost:3001/products",
+        `${apiUrl}/products`,
         newProduct
       );
       return response.data;
@@ -34,7 +36,7 @@ export const updateProduct = createAsyncThunk(
     try {
       console.log(id, updatedProduct);
       const response = await axios.put(
-        `http://localhost:3001/products/${id}`,
+        `${apiUrl}/products/${id}`,
         updatedProduct
       );
       return response.data;
@@ -49,7 +51,7 @@ export const deleteProduct = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3001/products/${id}`
+        `${apiUrl}/products/${id}`
       );
       return response.data;
     } catch (error) {

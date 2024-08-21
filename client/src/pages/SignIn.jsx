@@ -21,6 +21,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const loading = useSelector((state) => state.user.loading);
   const currentUser = useSelector((state) => state.user.currentUser);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (currentUser) {
@@ -39,7 +40,7 @@ const SignIn = () => {
     dispatch(signInStart()); // Dispatch action to set loading state
 
     try {
-      const response = await fetch("http://localhost:3001/auth/signin", {
+      const response = await fetch(`${apiUrl}/auth/signin`, {
         method: "POST",
         credentials: "include",
         headers: {
